@@ -1,8 +1,10 @@
 class PostsController < ApplicationController
+    before_action :log_request
     before_action :set_post, only: [:show, :update, :destroy]
   
     def index
       @posts = Post.all
+      Rails.logger.info("Returning all posts")
       render json: @posts
     end
   
@@ -39,6 +41,10 @@ class PostsController < ApplicationController
   
       def post_params
         params.require(:post).permit(:title, :body)
+      end
+
+      def log_request
+        Rails.logger.info("Received request for #{params[:action]} action on PostsController")
       end
   end
   
